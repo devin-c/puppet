@@ -253,7 +253,7 @@ module Puppet::Util::Execution
         Puppet::Util::POSIX::USER_ENV_VARS.each { |name| ENV.delete(name) }
 
         options[:custom_environment] ||= {}
-        Puppet::Util.withenv(options[:custom_environment]) do
+        Puppet::Util.with_bundle_free_env(options[:custom_environment]) do
           Kernel.exec(*command)
         end
       rescue => detail

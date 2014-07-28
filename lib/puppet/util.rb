@@ -48,6 +48,18 @@ module Util
     end
   end
 
+  # Run some code with a specific environment, ensuring it doesn't include
+  # bundler configuration.  Resets the environment back to what it was at the
+  # end of the code.
+  def self.with_bundle_free_env(hash, &block)
+    if defined?(Bundler)
+      Bundler.with_clean_env do
+        self.withenv(hash, &block)
+      end
+    else
+      self.withenv(hash, &block)
+    end
+  end
 
   # Execute a given chunk of code with a new umask.
   def self.withumask(mask)
